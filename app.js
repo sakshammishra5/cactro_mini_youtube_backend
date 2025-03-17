@@ -2,13 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { google } = require('googleapis');
-const { OAuth2Client } = require('google-auth-library');
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'https://cactro-youtube-mini-frontend.vercel.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+app.options('*', cors());
 app.use(express.json());
 
 
@@ -54,7 +59,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     const { code } = req.query;
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
-    res.redirect('http://localhost:5173/');
+    res.redirect('https://cactro-youtube-mini-frontend.vercel.app/');
     // res.send('Authentication successful! You can close this window.');
   });
 
